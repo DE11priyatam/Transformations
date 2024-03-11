@@ -14,26 +14,26 @@ spark = SparkSession.builder.getOrCreate()
 #Define a unified column list and impose using select for all the dataframe
 collist = ["txnno","txndate","custno","amount","category","product","city","state","spendby"]
 #Read file 3 as csv with header true
-csvdf = spark.read.format("csv").option("header","true").load("D:/Priyatam/Data/Pyspark/PysparkProjects/PySparkTransformations/Datasets/file3.txt").select(*collist)
+csvdf = spark.read.format("csv").option("header","true").load("file3.txt").select(*collist)
 print("Reading a file f3 CSV :-")
 csvdf.show()
 
 #Read file 4 as json and file 5 as parquet and show both the dataframe
-jsondf = spark.read.format("json").load("D:/Priyatam/Data/Pyspark/PysparkProjects/PySparkTransformations/Datasets/file4.json").select(*collist)
+jsondf = spark.read.format("json").load("file4.json").select(*collist)
 print("Reading a file f4 JSON :-")
 jsondf.show()
 
-parquetdf = spark.read.format("parquet").load("D:/Priyatam/Data/Pyspark/PysparkProjects/PySparkTransformations/Datasets/file5.parquet").select(*collist)
+parquetdf = spark.read.format("parquet").load("file5.parquet").select(*collist)
 print("Reading a file f5 PARQUET :-")
 parquetdf.show()
 
 #Read File6 as xml and show the dataframe
-xmldf = spark.read.format("xml").option("rowtag","txndata").load("D:/Priyatam/Data/Pyspark/PysparkProjects/PySparkTransformations/Datasets/file6.xml").select(*collist)
+xmldf = spark.read.format("xml").option("rowtag","txndata").load("file6.xml").select(*collist)
 print("Reading a file f6 XML :-")
 xmldf.show()
 
 #Read file1 as an rdd and filter gymnastics rows
-f1 = sc.textFile("D:/Priyatam/Data/Pyspark/PysparkProjects/PySparkTransformations/Datasets/file1.txt")
+f1 = sc.textFile("file1.txt")
 print("Original Data :-")
 for x in f1.take(5):
     print(x)
@@ -57,7 +57,7 @@ schemadf = schemafilgymdata.toDF().select(*collist)
 schemadf.show()
 
 #Read file2.txt convert that to Row Rdd
-f2 = sc.textFile("D:/Priyatam/Data/Pyspark/PysparkProjects/PySparkTransformations/Datasets/file2.txt")
+f2 = sc.textFile("file2.txt")
 flatdata1 = f2.map(lambda x:x.split(","))
 rowrdd = flatdata1.map(lambda x: Row(x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7],x[8]))
 print("Row RDD :-")
@@ -91,4 +91,4 @@ print("Final Data :-")
 finalres.show()
 
 #Write as an parquet in local with mode Append and partition the category column
-finalres.write.format("parquet").mode("append").partitionBy("category").save("D:/Priyatam/Data/Pyspark/PysparkProjects/PySparkTransformations/procdata")
+finalres.write.format("parquet").mode("append").partitionBy("category").save("procdata")
